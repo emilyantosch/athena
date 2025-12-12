@@ -1,0 +1,151 @@
+{
+  "project": {
+    "name": "athena",
+    "description": "A knowledge base system using Qdrant vector database and text embedding to enable agentic code tools to work with markdown and PDF files",
+    "version": "0.1.0"
+  },
+  "features": [
+    {
+      "id": "feature-001",
+      "name": "Document Ingestion - Markdown",
+      "description": {
+        "purpose": "Parse and process markdown (.md) files from a specified directory, extracting text content while preserving structure for meaningful chunking.",
+        "acceptance_criteria": [
+          "Recursively scan directories for .md files",
+          "Parse markdown syntax and extract plain text content",
+          "Preserve document structure (headings, sections) for context",
+          "Split documents into appropriately-sized chunks for embedding",
+          "Track source file path and chunk position metadata"
+        ]
+      },
+      "status": "proposed",
+      "priority": "high",
+      "dependencies": [],
+      "created": "2025-12-12",
+      "updated": "2025-12-12",
+      "notes": [
+        "Initial feature proposal for markdown document processing",
+        "Chunk size should be configurable",
+        "Consider using pulldown-cmark for parsing"
+      ]
+    },
+    {
+      "id": "feature-002",
+      "name": "Document Ingestion - PDF",
+      "description": {
+        "purpose": "Parse and process PDF files, extracting text content for embedding and semantic search.",
+        "acceptance_criteria": [
+          "Recursively scan directories for .pdf files",
+          "Extract text content from PDF pages",
+          "Handle multi-page documents appropriately",
+          "Split extracted text into chunks suitable for embedding",
+          "Track source file path, page number, and chunk position metadata"
+        ]
+      },
+      "status": "proposed",
+      "priority": "high",
+      "dependencies": [],
+      "created": "2025-12-12",
+      "updated": "2025-12-12",
+      "notes": [
+        "Initial feature proposal for PDF document processing",
+        "Consider using pdf-extract or similar crate",
+        "May need to handle different PDF encodings"
+      ]
+    },
+    {
+      "id": "feature-003",
+      "name": "Text Embedding Integration",
+      "description": {
+        "purpose": "Convert text chunks into vector embeddings using an embedding API service for semantic similarity search.",
+        "acceptance_criteria": [
+          "Support configurable embedding API endpoint",
+          "Handle API authentication via environment variables",
+          "Convert text chunks to vector embeddings",
+          "Support batch embedding for efficiency",
+          "Handle rate limiting and retries gracefully",
+          "Return embedding vectors with consistent dimensions"
+        ]
+      },
+      "status": "proposed",
+      "priority": "high",
+      "dependencies": ["feature-001", "feature-002"],
+      "created": "2025-12-12",
+      "updated": "2025-12-12",
+      "notes": [
+        "Embedding service should be pluggable (OpenAI, local models, etc.)",
+        "Consider caching embeddings to avoid redundant API calls"
+      ]
+    },
+    {
+      "id": "feature-004",
+      "name": "Qdrant Vector Storage",
+      "description": {
+        "purpose": "Store and manage document embeddings in Qdrant vector database for efficient similarity search.",
+        "acceptance_criteria": [
+          "Connect to Qdrant instance (local or cloud)",
+          "Create and manage collections for document embeddings",
+          "Store vectors with associated metadata (source, chunk info)",
+          "Support upsert operations for updating existing documents",
+          "Handle connection errors and reconnection gracefully"
+        ]
+      },
+      "status": "proposed",
+      "priority": "high",
+      "dependencies": ["feature-003"],
+      "created": "2025-12-12",
+      "updated": "2025-12-12",
+      "notes": [
+        "Use qdrant-client Rust crate",
+        "Collection schema should support filtering by source file"
+      ]
+    },
+    {
+      "id": "feature-005",
+      "name": "Semantic Search Query Interface",
+      "description": {
+        "purpose": "Provide a search interface that takes natural language queries, converts them to embeddings, and retrieves semantically similar document chunks from Qdrant.",
+        "acceptance_criteria": [
+          "Accept natural language query input",
+          "Convert query to embedding using same embedding service",
+          "Search Qdrant for similar vectors",
+          "Return ranked results with relevance scores",
+          "Include source metadata (file path, chunk context) in results",
+          "Support configurable result count and similarity threshold"
+        ]
+      },
+      "status": "proposed",
+      "priority": "high",
+      "dependencies": ["feature-003", "feature-004"],
+      "created": "2025-12-12",
+      "updated": "2025-12-12",
+      "notes": [
+        "Core functionality for AI tool integration",
+        "Results should include enough context to be useful"
+      ]
+    },
+    {
+      "id": "feature-006",
+      "name": "CLI Interface",
+      "description": {
+        "purpose": "Provide a command-line interface for indexing documents and querying the knowledge base.",
+        "acceptance_criteria": [
+          "index command: Index documents from a specified directory",
+          "search command: Query the knowledge base with natural language",
+          "status command: Show indexing status and statistics",
+          "Support configuration via command-line flags and environment variables",
+          "Provide helpful error messages and usage information"
+        ]
+      },
+      "status": "proposed",
+      "priority": "medium",
+      "dependencies": ["feature-001", "feature-002", "feature-005"],
+      "created": "2025-12-12",
+      "updated": "2025-12-12",
+      "notes": [
+        "Consider using clap for argument parsing",
+        "CLI should be usable standalone or integrated with AI tools"
+      ]
+    }
+  ]
+}
