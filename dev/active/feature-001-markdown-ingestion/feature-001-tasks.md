@@ -4,57 +4,59 @@
 
 ## Phase 1: Foundation Setup
 
-- [ ] **1.1** Update Cargo.toml with dependencies
+- [x] **1.1** Update Cargo.toml with dependencies
   - Add tokio, pulldown-cmark, walkdir, anyhow, thiserror, serde, uuid, tracing
   - Add tempfile as dev-dependency
   - Verify: `cargo check` passes
 
-- [ ] **1.2** Create `src/ingestion/mod.rs` skeleton
+- [x] **1.2** Create `src/ingestion/mod.rs` skeleton
   - Add module declarations
   - Verify: `cargo check` passes
 
+- **COMPLETED**: 2025-12-12
+
 ## Phase 2: Core Types & Traits
 
-- [ ] **2.1** Define `DocumentChunk` struct
+- [x] **2.1** Define `DocumentChunk` struct
   - Fields: id, content, source_file, chunk_index, heading_context, page_number
   - Derive: Debug, Clone, Serialize, Deserialize, PartialEq
 
-- [ ] **2.2** Define `ParsedDocument` and `HeadingInfo`
+- [x] **2.2** Define `ParsedDocument` and `HeadingInfo`
   - HeadingInfo: level, text, char_offset
   - ParsedDocument: content, headings Vec
 
-- [ ] **2.3** Define `ChunkConfig` with defaults
+- [x] **2.3** Define `ChunkConfig` with defaults
   - Default: chunk_size=512, chunk_overlap=50
   - Add `from_env()` constructor
 
-- [ ] **2.4** Define `IngestionError` enum
+- [x] **2.4** Define `IngestionError` enum
   - Variants: FileRead, UnsupportedFileType, MarkdownParse, DirectoryNotFound, InvalidConfig
 
-- [ ] **2.5** Define traits
+- [x] **2.5** Define traits
   - `DocumentParserLocal`: parse(), supported_extensions()
   - `TextChunker`: chunk()
   - `Ingestor`: ingest_directory(), ingest_file()
 
 ## Phase 3: Markdown Parser
 
-- [ ] **3.1** Implement `MarkdownParser` struct
+- [x] **3.1** Implement `MarkdownParser` struct
   - Constructor: `new()`
   - Extensions: .md, .markdown
 
-- [ ] **3.2** Implement pulldown-cmark event iteration
+- [x] **3.2** Implement pulldown-cmark event iteration
   - Handle: Heading, Text, Code, Paragraph, List, CodeBlock
   - Build content string with proper formatting
 
-- [ ] **3.3** Implement heading context tracking
+- [x] **3.3** Implement heading context tracking
   - Record HeadingInfo with level, text, char_offset
   - Handle nested headings correctly
 
-- [ ] **3.4** Write unit tests
-  - [ ] Test simple markdown
-  - [ ] Test nested headings
-  - [ ] Test code blocks
-  - [ ] Test lists
-  - [ ] Test supported_extensions()
+- [x] **3.4** Write unit tests
+  - [x] Test simple markdown
+  - [x] Test nested headings
+  - [x] Test code blocks
+  - [x] Test lists
+  - [x] Test supported_extensions()
 
 **Checkpoint:** `cargo test markdown` passes
 
@@ -126,6 +128,10 @@
 - [ ] **6.4** Manual testing
   - [ ] Run `cargo run -- dev_docs`
   - [ ] Verify output makes sense
+
+- [ ] **6.5** Fix module visibility
+  - Change `pub use` to `pub(crate) use` in `src/ingestion/mod.rs` for internal types
+  - Verify: `cargo check` passes
 
 **Final Checkpoint:** `cargo test` passes all tests
 
