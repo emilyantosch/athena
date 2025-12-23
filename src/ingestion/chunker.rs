@@ -25,6 +25,6 @@ impl TextChunker for SemanticChunker {
         _config: &ChunkConfig,
     ) -> Vec<DocumentChunk> {
         let chunks = Vec::<DocumentChunk>::new();
-        todo!("Implement semantic chunking in Phase 4")
+        todo!("Implement semantic chunking in Phase 4.1")
     }
 }
