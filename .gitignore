@@ -36,3 +36,4 @@ coverage/
 
 # Documentation build artifacts
 /doc/
+.grepai/
